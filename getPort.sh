@@ -5,7 +5,7 @@ PORT_RANGE_START=7000
 PORT_RANGE_END=7999
 
 # Folder to store ports
-FOLDER=./dev-site-ports
+FOLDER="$HOME/dev-site-ports"
 
 CHOSENPORT=0
 

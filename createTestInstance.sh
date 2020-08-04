@@ -100,6 +100,8 @@ if [ "$PORT" -eq "0" ]; then
    exit 1
 fi
 
+echo "Acquired port $PORT"
+
 # Store our commit ID in the port file for use in cleanup tasks
 echo "$COMMIT" > "$HOME/dev-site-ports/$PORT"
 
