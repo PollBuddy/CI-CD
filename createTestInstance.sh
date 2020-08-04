@@ -19,10 +19,10 @@ fi
 echo "Creating instance for $BRANCH at $COMMIT..."
 
 # Some input validation to be safe
-if [[ "${BRANCH}" =~ [^ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789/-_] ]]; then
+if [[ "${BRANCH}" =~ [^-_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789/] ]]; then
     echo "Invalid Branch, Aborting."; exit 1
 fi
-if [[ "${COMMIT}" =~ [^ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789/-_] ]]; then
+if [[ "${COMMIT}" =~ [^-_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789/] ]]; then
     echo "Invalid Commit, Aborting."; exit 1
 fi
 
