@@ -121,8 +121,11 @@ echo "Configuring environment variables complete"
 # Talk about it
 echo "Starting instance"
 
+# Build containers
+docker-compose build --parallel || { echo "Docker-Compose Build Failed, Aborting."; exit 1; }
+
 # Start it
-docker-compose up -d --build || { echo "Docker-Compose Failed, Aborting."; exit 1; }
+docker-compose up -d || { echo "Docker-Compose Up Failed, Aborting."; exit 1; }
 
 # We're done!
 echo "Instance is now running"
