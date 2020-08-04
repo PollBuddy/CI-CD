@@ -14,7 +14,7 @@ for ((PORT=PORT_RANGE_START; PORT<PORT_RANGE_END; PORT++))
 do
   if [[ ! -f "$FOLDER/$PORT" ]]; then
     # Found an open port to use
-    CHOSENPORT=PORT
+    CHOSENPORT=$PORT
     break
   fi
 done
