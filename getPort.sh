@@ -1,5 +1,12 @@
 #!/bin/bash
 
+########################################################################################
+# This script is designed to be called with no arguments, and return a port that is    #
+# currently unused, and allocate it so that concurrent runs hopefully don't take it.   #
+# This isn't perfectly thread-safe, but it should be close enough that we likely will  #
+# never run into any issues (sorry future folks if it does ever happen)                #
+########################################################################################
+
 # Ranges are inclusive
 PORT_RANGE_START=7000
 PORT_RANGE_END=7999
