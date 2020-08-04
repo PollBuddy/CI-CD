@@ -62,3 +62,66 @@ git checkout "$COMMIT" || { echo "Commit Checkout Failed, Aborting."; exit 1; }
 # Configure Instance Setup #
 ############################
 
+# Echo out what we're doing
+echo "Configuring environment variables"
+
+# Frontend
+
+# Copy frontend's .env file
+cp PollBuddy-Server/frontend/.env.example PollBuddy-Server/frontend/.env || { echo "Frontend .env Copy Failed, Aborting."; exit 1; }
+
+# Modify frontend's .env file
+# Update REACT_APP_BACKEND_URL
+sed -i "/REACT_APP_BACKEND_URL/c\REACT_APP_BACKEND_URL=https://dev-$COMMIT.pollbuddy.app/api" PollBuddy-Server/frontend/.env
+
+# Done configuring frontend environment variables
+echo "Frontend environment variables configured"
+
+# Backend
+
+# Copy backend's .env file
+cp PollBuddy-Server/backend/.env.example PollBuddy-Server/backend/.env || { echo "Backend .env Copy Failed, Aborting."; exit 1; }
+
+# Modify frontend's .env file
+# Nothing of interest to modify in backend's .env file
+
+# Done configuring frontend environment variables
+echo "Backend environment variables configured"
+
+# Docker
+
+# Configure port
+
+# Collect a port
+PORT="$(bash ./CI-CD/getPort.sh)"
+
+# Write into docker compose file
+sed -i "s/7655:80/$PORT:80/g" docker-compose.yml
+
+# Done configuring docker environment variables
+echo "Docker environment variables configured"
+
+# We're done configuring
+echo "Configuring environment variables complete"
+
+
+##################
+# Start instance #
+##################
+
+# Talk about it
+echo "Starting instance"
+
+docker-compose up -d --build
+
+
+
+
+
+
+
+
+
+
+
+
