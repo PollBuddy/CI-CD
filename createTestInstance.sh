@@ -94,6 +94,15 @@ echo "Backend environment variables configured"
 # Collect a port
 PORT="$(bash ~/CI-CD/getPort.sh)"
 
+# Make sure the port isn't 0
+if [ "$PORT" -eq "0" ]; then
+   echo "No ports available, Aborting.";
+   exit 1
+fi
+
+# Store our commit ID in the port file for use in cleanup tasks
+echo "$COMMIT" > "$HOME/dev-site-ports/$PORT"
+
 # Write into docker compose file
 sed -i "s/7655:80/$PORT:80/g" docker-compose.yml  || { echo "Docker SED Failed, Aborting."; exit 1; }
 
