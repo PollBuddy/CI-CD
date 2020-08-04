@@ -71,7 +71,7 @@ cp PollBuddy-Server/frontend/.env.example PollBuddy-Server/frontend/.env || { ec
 
 # Modify frontend's .env file
 # Update REACT_APP_BACKEND_URL
-sed -i "/REACT_APP_BACKEND_URL/c\REACT_APP_BACKEND_URL=https://dev-$COMMIT.pollbuddy.app/api" PollBuddy-Server/frontend/.env
+sed -i "/REACT_APP_BACKEND_URL/c\REACT_APP_BACKEND_URL=https://dev-$COMMIT.pollbuddy.app/api" PollBuddy-Server/frontend/.env  || { echo "Frontend SED Failed, Aborting."; exit 1; }
 
 # Done configuring frontend environment variables
 echo "Frontend environment variables configured"
@@ -92,17 +92,16 @@ echo "Backend environment variables configured"
 # Configure port
 
 # Collect a port
-PORT="$(bash ./CI-CD/getPort.sh)"
+PORT="$(bash ~/CI-CD/getPort.sh)"
 
 # Write into docker compose file
-sed -i "s/7655:80/$PORT:80/g" docker-compose.yml
+sed -i "s/7655:80/$PORT:80/g" docker-compose.yml  || { echo "Docker SED Failed, Aborting."; exit 1; }
 
 # Done configuring docker environment variables
 echo "Docker environment variables configured"
 
 # We're done configuring
 echo "Configuring environment variables complete"
-
 
 ##################
 # Start instance #
@@ -111,16 +110,52 @@ echo "Configuring environment variables complete"
 # Talk about it
 echo "Starting instance"
 
+# Start it
+docker-compose up -d --build || { echo "Docker-Compose Failed, Aborting."; exit 1; }
+
+# We're done!
+echo "Instance is now running"
+
+######################
+# Configure Dev Site #
+######################
+
+# Talk about it
+echo "Configuring dev site"
+
+# Copy example configuration file
+cp ~/dev-site/dev-webserver/conf.d/TEMPLATE.conf.ignore "$HOME/dev-site-configs/$COMMIT.conf" || { echo "Template NGINX Config Copy Failed, Aborting."; exit 1; }
+
+# Edit configuration file
+sed -i "s/TEMPLATE_COMMITID/$COMMIT/g" "$HOME/dev-site-configs/$COMMIT.conf"  || { echo "NGINX SED Failed, Aborting."; exit 1; }
+sed -i "s/TEMPLATE_PORT/$PORT/g" "$HOME/dev-site-configs/$COMMIT.conf"  || { echo "NGINX SED Failed, Aborting."; exit 1; }
+
+# We're done!
+echo "Dev site configured"
+
+####################
+# Restart Dev Site #
+####################
+
+# Talk about it
+echo "Restarting dev site"
+
+# Move over to the dev site folder
+cd ~/dev-site/ || { echo "CD to dev-site Failed, Aborting."; exit 1; }
+
+# Restart/Rebuild dev site
+docker-compose down
 docker-compose up -d --build
 
+# We're done!
+echo "Dev site restarted"
 
+##########
+# Finish #
+##########
 
+# We're done!
+echo "Deployment completed successfully!"
 
-
-
-
-
-
-
-
-
+# Exit
+exit 0
