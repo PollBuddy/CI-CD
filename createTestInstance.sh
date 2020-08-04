@@ -12,7 +12,7 @@ echo "Starting createTestInstance.sh Script..."
 #######################
 
 # Name the variable
-COMMIT=$2
+COMMIT=$1
 
 # Make sure exactly 1 argument is passed
 if [ $# -ne 1 ]; then
