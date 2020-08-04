@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "Starting createTestInstance.sh Script..."
+
 #######################
 # Argument Validation #
 #######################
@@ -30,27 +32,33 @@ echo "Arguments Validated."
 ###############
 
 # Echo out what we're doing
-echo "Creating instance for $BRANCH at $COMMIT..."
-
+echo "Creating instance for branch '$BRANCH' at commit '$COMMIT'"
 
 # Enter the folder to spin up an instance
 cd ~/CICD_TestInstances || { echo "Test Instances Folder Missing, Aborting."; exit 1; }
 
+# If for some reason this job was being rerun, we'll want to delete the old folder. We don't care if it fails of course
+rm -rf "$BRANCH.$COMMIT"
+
 # Create a folder for this instance
+echo "Creating folder for this instance"
 mkdir "$BRANCH.$COMMIT"
 
 # Enter it
 cd "$BRANCH.$COMMIT" || { echo "Branch.Commit Folder Missing, Aborting."; exit 1; }
 
 # Clone the repo
+echo "Cloning repo"
 git clone https://github.com/PollBuddy/PollBuddy || { echo "Repo Cloning Failed, Aborting."; exit 1; }
 
 # Enter it
 cd PollBuddy || { echo "Branch.Commit Folder Missing, Aborting."; exit 1; }
 
 # Checkout the commit
+echo "Checking out commit"
 git checkout "$COMMIT" || { echo "Commit Checkout Failed, Aborting."; exit 1; }
 
 ############################
 # Configure Instance Setup #
 ############################
+
