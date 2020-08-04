@@ -167,6 +167,7 @@ echo "Dev site restarted"
 
 # We're done!
 echo "Deployment completed successfully!"
+echo "Deploy Link: https://dev-$COMMIT.pollbuddy.app/"
 
 # Exit
 exit 0
