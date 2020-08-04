@@ -1,12 +1,22 @@
 #!/bin/bash
 
-# Arg conversion
+#######################
+# Argument Validation #
+#######################
+
 BRANCH=$1
 COMMIT=$2
+
+if [ $# -ne 2 ]; then
+    echo "Invalid Arguments Specified, Aborting."; exit 1
+fi
 
 ###############
 # Basic Setup #
 ###############
+
+# Echo out what we're doing
+echo "Creating instance for $BRANCH at $COMMIT..."
 
 # Some input validation to be safe
 if [[ "${BRANCH}" =~ [^ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789/-_] ]]; then
