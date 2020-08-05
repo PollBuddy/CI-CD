@@ -109,10 +109,15 @@ echo "$COMMIT" > "$HOME/dev-site-ports/$PORT"
 sed -i "s/7655:80/$PORT:80/g" docker-compose.yml  || { echo "Docker SED Failed, Aborting."; exit 1; }
 
 # Delete other port mappings (temporary until they're removed in the real code)
-sed -i "/3000:3000/d" docker-compose.yml  || { echo "Docker SED Failed, Aborting."; exit 1; }
-sed -i "/3001:3001/d" docker-compose.yml  || { echo "Docker SED Failed, Aborting."; exit 1; }
-sed -i "/3002:3000/d" docker-compose.yml  || { echo "Docker SED Failed, Aborting."; exit 1; }
-sed -i "/27017:27017/d" docker-compose.yml  || { echo "Docker SED Failed, Aborting."; exit 1; }
+tac docker-compose.yml | sed "/3000:3000/I,+1 d" | tac > docker-compose.yml.new || { echo "Docker SED Failed, Aborting."; exit 1; }
+mv docker-compose.yml.new docker-compose.yml || { echo "Docker SED Failed, Aborting."; exit 1; }
+tac docker-compose.yml | sed "/3001:3001/I,+1 d" | tac > docker-compose.yml.new || { echo "Docker SED Failed, Aborting."; exit 1; }
+mv docker-compose.yml.new docker-compose.yml || { echo "Docker SED Failed, Aborting."; exit 1; }
+tac docker-compose.yml | sed "/3002:3000/I,+1 d" | tac > docker-compose.yml.new || { echo "Docker SED Failed, Aborting."; exit 1; }
+mv docker-compose.yml.new docker-compose.yml || { echo "Docker SED Failed, Aborting."; exit 1; }
+tac docker-compose.yml | sed "/27017:27017/I,+1 d" | tac > docker-compose.yml.new || { echo "Docker SED Failed, Aborting."; exit 1; }
+mv docker-compose.yml.new docker-compose.yml || { echo "Docker SED Failed, Aborting."; exit 1; }
+
 
 # Done configuring docker environment variables
 echo "Docker environment variables configured"
