@@ -140,6 +140,9 @@ echo "Starting instance"
 # Build containers
 docker-compose -p $COMMIT build --parallel || { echo "Docker-Compose Build Failed, Aborting."; exit 1; }
 
+# Just in case this is a rerun, try to shut down previous containers
+docker-compose -p $COMMIT down
+
 # Start it
 docker-compose -p $COMMIT up -d || { echo "Docker-Compose Up Failed, Aborting."; exit 1; }
 
@@ -173,9 +176,8 @@ echo "Restarting dev site"
 # Move over to the dev site folder
 cd ~/dev-site/ || { echo "CD to dev-site Failed, Aborting."; exit 1; }
 
-# Restart/Rebuild dev site
-docker-compose down
-docker-compose up -d --build
+# Restart dev site (instance configs are bind mounted, so we just need to restart nginx)
+docker-compose restart
 
 # We're done!
 echo "Dev site restarted"
