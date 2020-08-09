@@ -5,7 +5,7 @@
 # clone the repo, check out the commit, and configure and start the app based on that. #
 ########################################################################################
 
-echo "Starting createTestInstance.sh Script..."
+echo "Starting deployTestInstance.sh Script..."
 
 #######################
 # Argument Validation #
@@ -122,7 +122,6 @@ tac docker-compose.yml | sed "/3002:3000/I,+1 d" | tac > docker-compose.yml.new 
 mv docker-compose.yml.new docker-compose.yml || { echo "Docker SED Failed, Aborting."; exit 1; }
 tac docker-compose.yml | sed "/27017:27017/I,+1 d" | tac > docker-compose.yml.new || { echo "Docker SED Failed, Aborting."; exit 1; }
 mv docker-compose.yml.new docker-compose.yml || { echo "Docker SED Failed, Aborting."; exit 1; }
-
 
 # Done configuring docker environment variables
 echo "Docker environment variables configured"
