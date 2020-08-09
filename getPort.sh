@@ -8,7 +8,7 @@
 ########################################################################################
 
 # Ranges are inclusive
-PORT_RANGE_START=7000
+PORT_RANGE_START=7001
 PORT_RANGE_END=7999
 
 # Folder to store ports
@@ -34,13 +34,3 @@ echo "$CHOSENPORT"
 
 # Done
 exit 0
-
-
-
-
-
-
-
-
-
-
