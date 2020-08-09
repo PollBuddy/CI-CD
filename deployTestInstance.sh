@@ -157,7 +157,7 @@ echo "Instance is now running"
 echo "Configuring dev site"
 
 # Copy example configuration file
-cp ~/dev-site/dev-webserver/conf.d/TEMPLATE.conf.ignore "$HOME/dev-site-configs/$COMMIT.conf" || { echo "Template NGINX Config Copy Failed, Aborting."; exit 1; }
+cp ~/PollBuddy.app/dev-webserver/conf.d/TEMPLATE.conf.ignore "$HOME/dev-site-configs/$COMMIT.conf" || { echo "Template NGINX Config Copy Failed, Aborting."; exit 1; }
 
 # Edit configuration file
 sed -i "s/TEMPLATE_COMMITID/$COMMIT/g" "$HOME/dev-site-configs/$COMMIT.conf"  || { echo "NGINX SED Failed, Aborting."; exit 1; }
@@ -173,8 +173,8 @@ echo "Dev site configured"
 # Talk about it
 echo "Restarting dev site"
 
-# Move over to the dev site folder
-cd ~/dev-site/ || { echo "CD to dev-site Failed, Aborting."; exit 1; }
+# Move over to the website folder
+cd ~/PollBuddy.app/ || { echo "CD to PollBuddy.app Folder Failed, Aborting."; exit 1; }
 
 # Restart dev site (instance configs are bind mounted, so we just need to restart nginx)
 docker-compose restart
