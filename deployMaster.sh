@@ -12,6 +12,12 @@ echo "Starting deployMaster.sh Script..."
 # Exclusivity Check #
 #####################
 
+function finish {
+  # Remove lock file
+  rm -f ~/deployMaster.lock
+}
+trap finish EXIT
+
 # Try to acquire a lock every 5 seconds, not continuing until then.
 # Given that this normally is run by GitHub, this should end up terminated by them if it never gets a lock
 echo "Acquiring lock..."
@@ -117,9 +123,6 @@ echo "Instance is now running"
 ##########
 # Finish #
 ##########
-
-# Remove lock file
-rm -f ~/deployMaster.lock
 
 # We're done!
 echo "Deployment completed successfully!"

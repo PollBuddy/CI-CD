@@ -9,6 +9,22 @@
 
 echo "Starting deployTestInstance.sh Script..."
 
+#####################
+# Exclusivity Check #
+#####################
+
+function finish {
+  # Remove lock file
+  rm -f ~/deployTestInstance.lock
+}
+trap finish EXIT
+
+# Try to acquire a lock every 5 seconds, not continuing until then.
+# Given that this normally is run by GitHub, this should end up terminated by them if it never gets a lock
+echo "Acquiring lock..."
+lockfile -5 ~/deployTestInstance.lock
+
+
 #######################
 # Argument Validation #
 #######################
@@ -27,15 +43,6 @@ if [[ "${COMMIT}" =~ [^abcdefghijklmnopqrstuvwxyz0123456789] ]]; then
 fi
 
 echo "Argument Validated."
-
-#####################
-# Exclusivity Check #
-#####################
-
-# Try to acquire a lock every 5 seconds, not continuing until then.
-# Given that this normally is run by GitHub, this should end up terminated by them if it never gets a lock
-echo "Acquiring lock..."
-lockfile -5 ~/deployTestInstance.lock
 
 ###############
 # Basic Setup #
@@ -195,9 +202,6 @@ echo "Dev site restarted"
 ##########
 # Finish #
 ##########
-
-# Remove lock file
-rm -f ~/deployTestInstance.lock
 
 # We're done!
 echo "Deployment completed successfully!"
