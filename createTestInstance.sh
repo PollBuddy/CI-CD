@@ -108,6 +108,11 @@ echo "$COMMIT" > "$HOME/dev-site-ports/$PORT"
 # Write into docker compose file
 sed -i "s/7655:80/$PORT:80/g" docker-compose.yml  || { echo "Docker SED Failed, Aborting."; exit 1; }
 
+# Add newlines to docker-compose.yml to fix issue with tac breaking
+echo "" >> docker-compose.yml
+echo "" >> docker-compose.yml
+echo "" >> docker-compose.yml
+
 # Delete other port mappings (temporary until they're removed in the real code)
 tac docker-compose.yml | sed "/3000:3000/I,+1 d" | tac > docker-compose.yml.new || { echo "Docker SED Failed, Aborting."; exit 1; }
 mv docker-compose.yml.new docker-compose.yml || { echo "Docker SED Failed, Aborting."; exit 1; }
