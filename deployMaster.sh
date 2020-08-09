@@ -14,6 +14,7 @@ echo "Starting deployMaster.sh Script..."
 
 # Try to acquire a lock every 5 seconds, not continuing until then.
 # Given that this normally is run by GitHub, this should end up terminated by them if it never gets a lock
+echo "Acquiring lock..."
 lockfile -5 ~/deployMaster.lock
 
 ###############
