@@ -5,6 +5,8 @@
 # clone the repo, check out the commit, and configure and start the app based on that. #
 ########################################################################################
 
+# Requires packages: docker, docker-compose, procmail, git, sed, tac, potentially others depending on your distro
+
 echo "Starting deployTestInstance.sh Script..."
 
 #######################
@@ -25,6 +27,14 @@ if [[ "${COMMIT}" =~ [^abcdefghijklmnopqrstuvwxyz0123456789] ]]; then
 fi
 
 echo "Argument Validated."
+
+#####################
+# Exclusivity Check #
+#####################
+
+# Try to acquire a lock every 5 seconds, not continuing until then.
+# Given that this normally is run by GitHub, this should end up terminated by them if it never gets a lock
+lockfile -5 ~/deployTestInstance.lock
 
 ###############
 # Basic Setup #
@@ -156,7 +166,7 @@ echo "Instance is now running"
 echo "Configuring dev site"
 
 # Copy example configuration file
-cp ~/PollBuddy.app/dev-webserver/conf.d/TEMPLATE.conf.ignore "$HOME/dev-site-configs/$COMMIT.conf" || { echo "Template NGINX Config Copy Failed, Aborting."; exit 1; }
+cp ~/PollBuddy.app/webserver/conf.d/TEMPLATE.conf.ignore "$HOME/dev-site-configs/$COMMIT.conf" || { echo "Template NGINX Config Copy Failed, Aborting."; exit 1; }
 
 # Edit configuration file
 sed -i "s/TEMPLATE_COMMITID/$COMMIT/g" "$HOME/dev-site-configs/$COMMIT.conf"  || { echo "NGINX SED Failed, Aborting."; exit 1; }
@@ -184,6 +194,9 @@ echo "Dev site restarted"
 ##########
 # Finish #
 ##########
+
+# Remove lock file
+rm -f ~/deployTestInstance.lock
 
 # We're done!
 echo "Deployment completed successfully!"

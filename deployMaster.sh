@@ -4,7 +4,17 @@
 # This script is designed to clone the repo and configure and start the app. #
 ##############################################################################
 
+# Requires packages: docker, docker-compose, procmail, git, sed, tac, potentially others depending on your distro
+
 echo "Starting deployMaster.sh Script..."
+
+#####################
+# Exclusivity Check #
+#####################
+
+# Try to acquire a lock every 5 seconds, not continuing until then.
+# Given that this normally is run by GitHub, this should end up terminated by them if it never gets a lock
+lockfile -5 ~/deployMaster.lock
 
 ###############
 # Basic Setup #
@@ -106,6 +116,9 @@ echo "Instance is now running"
 ##########
 # Finish #
 ##########
+
+# Remove lock file
+rm -f ~/deployMaster.lock
 
 # We're done!
 echo "Deployment completed successfully!"
