@@ -10,24 +10,6 @@
 
 echo "Starting deployTestInstance.sh Script..."
 
-#####################
-# Exclusivity Check #
-#####################
-
-function finish {
-  # Remove lock files
-  rm -f ~/deployTestInstance.lock
-  rm -f ~/deployTestInstance-"$ID".lock
-}
-trap finish EXIT
-
-# Try to acquire a lock every 5 seconds, not continuing until then.
-# Given that this normally is run by GitHub, this should end up terminated by them if it never gets a lock
-echo "Acquiring unique lock..."
-
-# Acquire unique lock so that we can have parallel builds that don't interfere with each other
-lockfile -5 ~/deployTestInstance-"$ID".lock
-
 
 
 #######################
@@ -43,7 +25,7 @@ if [ $# -ne 2 ]; then
     echo "Invalid Number Of Arguments Specified, Aborting."; exit 1
 fi
 
-TODO: ALLOW FOR LEGACY OPERATION WITH 1 ARG FOR ISSUE MODE --------------------------------------------------------------------
+# TODO: ALLOW FOR LEGACY OPERATION WITH 1 ARG FOR ISSUE MODE
 
 
 # Validate MODE and ID (depending on MODE)
@@ -66,6 +48,26 @@ else
 fi
 
 echo "Arguments Validated."
+
+
+
+#####################
+# Exclusivity Check #
+#####################
+
+function finish {
+  # Remove lock files
+  rm -f ~/deployTestInstance.lock
+  rm -f ~/deployTestInstance-"$ID".lock
+}
+trap finish EXIT
+
+# Try to acquire a lock every 5 seconds, not continuing until then.
+# Given that this normally is run by GitHub, this should end up terminated by them if it never gets a lock
+echo "Acquiring unique lock..."
+
+# Acquire unique lock so that we can have parallel builds that don't interfere with each other
+lockfile -5 ~/deployTestInstance-"$ID".lock
 
 
 
