@@ -43,6 +43,9 @@ if [ $# -ne 2 ]; then
     echo "Invalid Number Of Arguments Specified, Aborting."; exit 1
 fi
 
+TODO: ALLOW FOR LEGACY OPERATION WITH 1 ARG FOR ISSUE MODE --------------------------------------------------------------------
+
+
 # Validate MODE and ID (depending on MODE)
 if [ "$MODE" = "ISSUE" ]; then
 
@@ -229,7 +232,7 @@ echo "Configuring dev site"
 cp ~/PollBuddy.app/webserver/conf.d/TEMPLATE.conf.ignore "$HOME/dev-site-configs/$ID.conf" || { echo "Template NGINX Config Copy Failed, Aborting."; exit 1; }
 
 # Edit configuration file
-sed -i "s/TEMPLATE_IDID/$ID/g" "$HOME/dev-site-configs/$ID.conf"  || { echo "NGINX SED Failed, Aborting."; exit 1; }
+sed -i "s/TEMPLATE_COMMITID/$ID/g" "$HOME/dev-site-configs/$ID.conf"  || { echo "NGINX SED Failed, Aborting."; exit 1; }
 sed -i "s/TEMPLATE_PORT/$PORT/g" "$HOME/dev-site-configs/$ID.conf"  || { echo "NGINX SED Failed, Aborting."; exit 1; }
 
 # We're done!
