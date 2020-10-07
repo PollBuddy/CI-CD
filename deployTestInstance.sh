@@ -23,10 +23,10 @@ trap finish EXIT
 
 # Try to acquire a lock every 5 seconds, not continuing until then.
 # Given that this normally is run by GitHub, this should end up terminated by them if it never gets a lock
-echo "Acquiring lock..."
+echo "Acquiring unique lock..."
 
 # Acquire unique lock so that we can have parallel builds that don't interfere with each other
-lockfile -5 ~/deployTestInstance.lock
+lockfile -5 ~/deployTestInstance-"$ID".lock
 
 
 
@@ -155,6 +155,9 @@ echo "Backend environment variables configured"
 
 # Configure port
 
+# Acquire global lock for this next part
+lockfile -5 ~/deployTestInstance.lock
+
 # Collect a port
 PORT="$(bash ~/CI-CD/getPort.sh)"
 
@@ -165,6 +168,9 @@ if [ "$PORT" -eq "0" ]; then
 fi
 
 echo "Acquired port $PORT"
+
+# Unlock for now
+rm -f ~/deployTestInstance.lock
 
 # Store our commit ID in the port file for use in cleanup tasks
 echo "$ID" > "$HOME/dev-site-ports/$PORT"
@@ -236,6 +242,9 @@ echo "Dev site configured"
 # Talk about it
 echo "Restarting dev site"
 
+# Acquire the lock again
+lockfile -5 ~/deployTestInstance.lock
+
 # Move over to the website folder
 cd ~/PollBuddy.app/ || { echo "CD to PollBuddy.app Folder Failed, Aborting."; exit 1; }
 
@@ -253,5 +262,5 @@ echo "Dev site restarted"
 echo "Deployment completed successfully!"
 echo "Deploy Link: https://dev-$ID.pollbuddy.app/"
 
-# Exit
+# Exit and release locks
 exit 0
