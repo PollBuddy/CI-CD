@@ -216,16 +216,17 @@ echo "Configuring environment variables complete"
 # Start instance #
 ##################
 
-# Talk about it
-echo "Starting instance"
 
 # Build containers
+echo "Building containers for instance"
 docker-compose -p $ID build --parallel || { echo "Docker-Compose Build Failed, Aborting."; exit 1; }
 
 # Just in case this is a rerun, try to shut down previous containers
+echo "Attempting to stop any previous containers"
 docker-compose -p $ID down
 
-# Start it
+# Start the new instance
+echo "Starting instance"
 docker-compose -p $ID up -d || { echo "Docker-Compose Up Failed, Aborting."; exit 1; }
 
 # We're done!
