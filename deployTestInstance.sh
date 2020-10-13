@@ -22,7 +22,15 @@ MODE=$2
 
 # Make sure exactly 2 arguments are passed
 if [ $# -ne 2 ]; then
+  # 2 args not passed, see if 1 was
+  if [ $# -ne 1 ]; then
+    # 1 arg was not passed
     echo "Invalid Number Of Arguments Specified, Aborting."; exit 1
+  else
+    # 1 arg was passed, use compatibility mode
+    echo "1 Argument specified, running in compatibility mode"
+    MODE="ISSUE"
+  fi
 fi
 
 # TODO: ALLOW FOR LEGACY OPERATION WITH 1 ARG FOR ISSUE MODE
