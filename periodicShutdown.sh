@@ -15,7 +15,7 @@
 ###############
 
 # Echo out what we're doing
-echo "Checking for any instances to shut down"
+echo "Checking for any instances to shut down (current time: $(date))"
 
 # Enter the folder of instances
 cd ~/CICD_TestInstances || { echo "Test Instances Folder Missing, Aborting."; exit 1; }
@@ -52,4 +52,8 @@ do
 
 done
 
-echo "Instance check complete"
+echo "Instance check complete on $(date)"
+echo ""
+
+# Exit
+exit 0
