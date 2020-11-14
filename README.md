@@ -18,3 +18,19 @@ This will run the script `every day` at `midnight` and log output to `/var/log/c
 
 If you are running this yourself, add this line to your docker.service file to ensure there is enough Docker Network space for all the instances: 
 `--default-address-pool base=10.127.0.0/16,size=28`
+
+Alternatively, configure it in `/etc/docker/daemon.js`: (`...` indicates possible existing values. Do not include these `...`'s)
+
+```
+{
+    ...
+    "default-address-pools":
+        [
+            {
+                "base": "10.127.0.0/16",
+                "size": 28
+            }
+        ]
+    ...
+}
+```
