@@ -12,6 +12,8 @@ Configure CRON with the following line (or similar)
 
 You can do this with `crontab -e`
 
+This will run the script `every day` at `midnight` and log output to `/var/log/cron/pollbuddy-periodicDelete.log`.
+
 ## Notes:
 
 If you are running this yourself, add this line to your docker.service file to ensure there is enough Docker Network space for all the instances: 
