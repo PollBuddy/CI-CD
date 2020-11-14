@@ -8,11 +8,11 @@ Scripts to handle automated creation of test instances and the production enviro
 
 Configure CRON with the following line (or similar)
 
-`0 0 * * * /bin/bash /home/pollbuddy/CI-CD/periodicShutdown.sh >> /var/log/cron/pollbuddy-periodicDelete.log 2>&1`
+`0 0 * * * /bin/bash /home/pollbuddy/CI-CD/periodicShutdown.sh >> /var/log/cron/pollbuddy-periodicShutdown.log 2>&1`
 
 You can do this with `crontab -e`
 
-This will run the script `every day` at `midnight` and log output to `/var/log/cron/pollbuddy-periodicDelete.log`.
+This will run the script `every day` at `midnight` and log output to `/var/log/cron/pollbuddy-periodicShutdown.log`.
 
 ## Notes:
 
