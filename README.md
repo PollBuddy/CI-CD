@@ -8,7 +8,12 @@ Scripts to handle automated creation of test instances and the production enviro
 
 Configure CRON with the following line (or similar)
 
-`0 0 * * * /bin/bash /home/pollbuddy/CI-CD/periodicShutdown.sh >> /var/log/cron/pollbuddy-periodicShutdown.log 2>&1`
+```
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+0 0 * * * /bin/bash /home/pollbuddy/CI-CD/periodicShutdown.sh >> /var/log/cron/pollbuddy-periodicShutdown.log 2>&1
+```
+
+Path is just what I had. It can likely be much more limited. You may want to use the output of the `echo $PATH` command so that it's specific to your system.
 
 You can do this with `crontab -e`
 

@@ -43,9 +43,11 @@ do
 
         # Enter the folder to shut it down
         cd "$entry/PollBuddy" || { echo "Failed to cd into instance, aborting."; exit 1; }
-        docker-compose -p "entry" down
+        docker-compose -p "$entry" down
         cd ../../ || { echo "Failed to cd out of instance, aborting."; exit 1; }
         echo "Instance has been shut down"
+    else
+        echo "Instance does not need to be shut down"
     fi
 
     echo "---"
