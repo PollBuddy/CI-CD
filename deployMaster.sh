@@ -53,6 +53,8 @@ echo "Configuring environment variables"
 cp PollBuddy-Server/frontend/.env.example PollBuddy-Server/frontend/.env || { echo "Frontend .env Copy Failed, Aborting."; exit 1; }
 
 # Modify frontend's .env file
+# Update REACT_APP_FRONTEND_URL
+sed -i "/REACT_APP_FRONTEND_URL/c\REACT_APP_FRONTEND_URL=https://pollbuddy.app" PollBuddy-Server/frontend/.env  || { echo "Frontend SED Failed, Aborting."; exit 1; }
 # Update REACT_APP_BACKEND_URL
 sed -i "/REACT_APP_BACKEND_URL/c\REACT_APP_BACKEND_URL=https://pollbuddy.app/api" PollBuddy-Server/frontend/.env  || { echo "Frontend SED Failed, Aborting."; exit 1; }
 
@@ -64,8 +66,9 @@ echo "Frontend environment variables configured"
 # Copy backend's .env file
 cp PollBuddy-Server/backend/.env.example PollBuddy-Server/backend/.env || { echo "Backend .env Copy Failed, Aborting."; exit 1; }
 
-# Modify frontend's .env file
-# Nothing of interest to modify in backend's .env file
+# Modify backend's .env file
+# Update FRONTEND_URL
+sed -i "/FRONTEND_URL/c\FRONTEND_URL=https://pollbuddy.app" PollBuddy-Server/backend/.env  || { echo "Backend SED Failed, Aborting."; exit 1; }
 
 # Done configuring frontend environment variables
 echo "Backend environment variables configured"
