@@ -215,10 +215,18 @@ echo "Docker environment variables configured"
 # We're done configuring
 echo "Configuring environment variables complete"
 
-##################
-# Start instance #
-##################
+#############################
+# Create and Start instance #
+#############################
 
+# Pull the latest images
+echo "Pulling latest Docker images"
+docker pull node:current
+docker pull node:current-alpine
+docker pull mongo:latest
+docker pull nginx:latest
+docker pull influxdb:1.8
+docker pull grafana/grafana:latest
 
 # Build containers
 echo "Building containers for instance"

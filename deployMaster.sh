@@ -104,20 +104,29 @@ echo "Docker environment variables configured"
 # We're done configuring
 echo "Configuring environment variables complete"
 
-##################
-# Start instance #
-##################
+#############################
+# Create and Start instance #
+#############################
 
-# Talk about it
-echo "Starting instance"
+# Pull the latest images
+echo "Pulling latest Docker images"
+docker pull node:current
+docker pull node:current-alpine
+docker pull mongo:latest
+docker pull nginx:latest
+docker pull influxdb:1.8
+docker pull grafana/grafana:latest
 
 # Build containers
+echo "Building containers for instance"
 docker-compose -p MASTER build --parallel || { echo "Docker-Compose Build Failed, Aborting."; exit 1; }
 
 # Just in case this is a rerun, try to shut down previous containers
+echo "Attempting to stop any previous containers"
 docker-compose -p MASTER down
 
 # Start it
+echo "Starting instance"
 docker-compose -p MASTER up -d || { echo "Docker-Compose Up Failed, Aborting."; exit 1; }
 
 # We're done!
