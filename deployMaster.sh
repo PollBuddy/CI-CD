@@ -35,7 +35,7 @@ rm -rf PollBuddy
 
 # Clone the repo
 echo "Cloning repo"
-git clone https://github.com/PollBuddy/PollBuddy || { echo "Repo Cloning Failed, Aborting."; exit 1; }
+git clone --depth 1 https://github.com/PollBuddy/PollBuddy || { echo "Repo Cloning Failed, Aborting."; exit 1; }
 
 # Enter it
 cd PollBuddy || { echo "Repo Folder Missing, Aborting."; exit 1; }
