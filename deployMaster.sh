@@ -69,6 +69,14 @@ cp PollBuddy-Server/backend/.env.example PollBuddy-Server/backend/.env || { echo
 # Modify backend's .env file
 # Update FRONTEND_URL
 sed -i "/FRONTEND_URL/c\FRONTEND_URL=https://pollbuddy.app" PollBuddy-Server/backend/.env  || { echo "Backend SED Failed, Aborting."; exit 1; }
+# Configure the custom session secret
+sed -i "/SESSION_SECRET/c\SESSION_SECRET=$(cat ../env/SESSION_SECRET)" PollBuddy-Server/backend/.env  || { echo "Backend SED Failed, Aborting."; exit 1; }
+# Configure email server access
+sed -i "/EMAIL_ADDRESS_INTERNAL/c\EMAIL_ADDRESS_INTERNAL=$(cat ../env/EMAIL_ADDRESS_INTERNAL)" PollBuddy-Server/backend/.env  || { echo "Backend SED Failed, Aborting."; exit 1; }
+sed -i "/EMAIL_ADDRESS_EXTERNAL/c\EMAIL_ADDRESS_EXTERNAL=$(cat ../env/EMAIL_ADDRESS_EXTERNAL)" PollBuddy-Server/backend/.env  || { echo "Backend SED Failed, Aborting."; exit 1; }
+sed -i "/EMAIL_CLIENT_ID/c\EMAIL_CLIENT_ID=$(cat ../env/EMAIL_CLIENT_ID)" PollBuddy-Server/backend/.env  || { echo "Backend SED Failed, Aborting."; exit 1; }
+sed -i "/EMAIL_CLIENT_SECRET/c\EMAIL_CLIENT_SECRET=$(cat ../env/EMAIL_CLIENT_SECRET)" PollBuddy-Server/backend/.env  || { echo "Backend SED Failed, Aborting."; exit 1; }
+sed -i "/EMAIL_REFRESH_TOKEN/c\EMAIL_REFRESH_TOKEN=$(cat ../env/EMAIL_REFRESH_TOKEN)" PollBuddy-Server/backend/.env  || { echo "Backend SED Failed, Aborting."; exit 1; }
 
 # Done configuring frontend environment variables
 echo "Backend environment variables configured"
