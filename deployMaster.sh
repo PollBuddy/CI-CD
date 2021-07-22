@@ -120,7 +120,7 @@ echo "Configuring environment variables complete"
 echo "Pulling latest Docker images"
 docker pull node:current
 docker pull node:current-alpine
-docker pull mongo:latest
+docker pull mongo:4
 docker pull nginx:latest
 docker pull influxdb:1.8
 docker pull grafana/grafana:latest
