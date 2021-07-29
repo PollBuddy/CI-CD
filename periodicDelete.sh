@@ -61,6 +61,14 @@ do
 done
 
 echo "Instance check complete on $(date)."
+
+echo "Cleaning up Docker Data..."
+# Filter makes sure images are at least 2h old to prune (in case any builds are running)
+docker image prune -f -a --filter "until=2h"
+docker volume prune -f  # Doesn't support the filter for some reason, shouldn't really matter though
+docker network prune -f --filter "until=2h"
+
+echo "Docker Data cleanup complete on $(date)."
 echo ""
 
 # Exit
