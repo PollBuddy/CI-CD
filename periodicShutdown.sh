@@ -3,11 +3,11 @@
 ########################################################################################
 # This script is designed to be called with no arguments as a periodic cron job. It    #
 # will check for instances that have been spun up, and shut them down after a set time #
-# period elapses. They will be able to be started back up manually if desired.         #
-# To determine an instance's age, the directory timestamp of the instance root folder  #
-# is used. When an instance is started up afterwards (or recreated for some reason),   #
-# the timestamp should be updated and then automatically not be shut down again by     #
-# this script.                                                                         #
+# period elapses (currently set to 2 weeks). They will be able to be started back up   #
+# manually if desired. To determine an instance's age, the directory timestamp of the  #
+# instance root folder is used. When an instance is started up afterwards (or          #
+# recreated for some reason), the timestamp should be updated and then automatically   #
+# not be shut down again by this script.                                               #
 ########################################################################################
 
 ###############
@@ -15,7 +15,7 @@
 ###############
 
 # Echo out what we're doing
-echo "Checking for any instances to shut down (current time: $(date))"
+echo "Checking for any instances to shut down (current time: $(date))."
 
 # Enter the folder of instances
 cd ~/CICD_TestInstances || { echo "Test Instances Folder Missing, Aborting."; exit 1; }
@@ -29,32 +29,43 @@ NOW=$(date +"%s")
 # Loop through each folder and check if it's time to shut it down
 for entry in "."/*
 do
-    entry=${entry:2}
-    echo "$entry"
-    INSTANCETIME=$(stat -c %Y "$entry")
+  entry=${entry:2}
+  echo "$entry"
+
+  # See if it's running
+  if docker ps | grep -q "$entry"; then
+    echo "Instance is running."
+
+    # Check the modified time
+    INSTANCETIME=$(stat -c %Y "$entry")  # Checks the modified time of the instance folder
 
     # Compare
     (( DAYSOLD = ( ( NOW - INSTANCETIME ) / ( 60*60*24 ) ) ))
-    echo "Instance is $DAYSOLD days old ($(stat -c %y "$entry"))"
+    echo "Instance is $DAYSOLD days old ($(stat -c %y "$entry"))."
 
     # Check if too old
     if (( ( NOW - INSTANCETIME ) > TIMEOUT )); then
-        echo "Shutting down instance"
+        echo "Shutting down instance."
 
         # Enter the folder to shut it down
         cd "$entry/PollBuddy" || { echo "Failed to cd into instance, aborting."; exit 1; }
         docker-compose -p "$entry" down
         cd ../../ || { echo "Failed to cd out of instance, aborting."; exit 1; }
-        echo "Instance has been shut down"
+        echo "Instance has been shut down."
+
     else
-        echo "Instance does not need to be shut down"
+        echo "Instance does not need to be shut down."
     fi
 
-    echo "---"
+  else
+    echo "Instance not running, ignoring."
+  fi
+
+  echo "---"
 
 done
 
-echo "Instance check complete on $(date)"
+echo "Instance check complete on $(date)."
 echo ""
 
 # Exit
