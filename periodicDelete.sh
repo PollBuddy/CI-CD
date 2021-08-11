@@ -7,6 +7,18 @@
 # recreated to be spun up again.                                                       #
 ########################################################################################
 
+#####################
+# Exclusivity Check #
+#####################
+
+function finish {
+  # Remove lock files
+  rm -f ~/deployTestInstance.lock
+}
+trap finish EXIT
+
+
+
 ###############
 # Basic Setup #
 ###############
@@ -143,7 +155,7 @@ echo "Old config files cleanup complete on $(date)."
 # Talk about it
 echo "Restarting dev site"
 
-# Acquire the lock again
+# Acquire the lock
 lockfile -5 ~/deployTestInstance.lock
 
 # Move over to the website folder
