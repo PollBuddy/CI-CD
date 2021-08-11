@@ -33,9 +33,6 @@ if [ $# -ne 2 ]; then
   fi
 fi
 
-# TODO: ALLOW FOR LEGACY OPERATION WITH 1 ARG FOR ISSUE MODE
-
-
 # Validate MODE and ID (depending on MODE)
 if [ "${MODE}" = "ISSUE" ]; then
 
