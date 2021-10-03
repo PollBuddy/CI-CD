@@ -23,7 +23,7 @@ do
     # File does not exist, therefore we found an open port to use
     CHOSENPORT=$PORT
     break
-  elif [[ "$(cat "$FOLDER/$PORT")" == "$1" ]]; then
+  elif [[ $# -ne 0 ]] && [[ "$(cat "$FOLDER/$PORT")" == "$1" ]]; then
     # File contents have the ID that we are currently getting a port for, reuse that port
     CHOSENPORT=$PORT
     break
