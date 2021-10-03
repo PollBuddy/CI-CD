@@ -172,7 +172,7 @@ echo "Backend environment variables configured"
 lockfile -5 ~/deployTestInstance.lock
 
 # Collect a port
-PORT="$(bash ~/CI-CD/getPort.sh)"
+PORT="$(bash ~/CI-CD/getPort.sh "$ID")"
 
 # Make sure the port isn't 0
 if [ "${PORT}" -eq "0" ]; then

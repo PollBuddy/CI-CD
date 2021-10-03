@@ -3,8 +3,8 @@
 ########################################################################################
 # This script is designed to be called with no arguments, and return a port that is    #
 # currently unused, and allocate it so that concurrent runs hopefully don't take it.   #
-# This isn't perfectly thread-safe, but it should be close enough that we likely will  #
-# never run into any issues (sorry future folks if it does ever happen)                #
+# This isn't perfectly multi-access safe, but it should be close enough that we likely #
+# will never run into any issues (sorry future folks if it does ever happen)           #
 ########################################################################################
 
 # Ranges are inclusive
@@ -20,7 +20,11 @@ CHOSENPORT=0
 for ((PORT=PORT_RANGE_START; PORT<PORT_RANGE_END; PORT++))
 do
   if [[ ! -f "$FOLDER/$PORT" ]]; then
-    # Found an open port to use
+    # File does not exist, therefore we found an open port to use
+    CHOSENPORT=$PORT
+    break
+  elif [[ "$(cat "$FOLDER/$PORT")" == "$1" ]]; then
+    # File contents have the ID that we are currently getting a port for, reuse that port
     CHOSENPORT=$PORT
     break
   fi
