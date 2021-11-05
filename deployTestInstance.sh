@@ -62,6 +62,7 @@ echo "Arguments Validated."
 
 function finish {
   # Remove lock files
+  echo "Trapped EXIT, removing lockfiles"
   rm -f ~/deployTestInstance.lock
   rm -f ~/deployTestInstance-"${ID}".lock
 }
@@ -73,6 +74,7 @@ echo "Acquiring unique lock..."
 
 # Acquire unique lock so that we can have parallel builds that don't interfere with each other
 lockfile -5 ~/deployTestInstance-"${ID}".lock
+echo "Unique lock acquired"
 
 
 
