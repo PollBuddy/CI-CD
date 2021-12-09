@@ -33,7 +33,7 @@ do
   echo "$entry"
 
   # See if it's running
-  if docker ps | grep -q "$entry"; then
+  if docker ps --format '{{.Names}}' | grep -q "$entry"; then
     echo "Instance is running."
 
     # Check the modified time
